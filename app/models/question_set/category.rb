@@ -1,8 +1,9 @@
 class QuestionSet::Category < ActiveRecord::Base
   validates :name, :max_question, presence: true
 
-  has_many :category_questions, class_name: "QuestionSet::CategoryQuestion"
-  has_many :questions, :through => :category_questions
+  has_many :questions, class_name: "QuestionSet::Question", inverse_of: :category
+
+  accepts_nested_attributes_for :questions, allow_destroy: true
 
   default_scope { order("id") }
 

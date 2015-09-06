@@ -1,11 +1,12 @@
 angular.module('quizzer').controller('QuestionFormController', QuestionFormController);
 
 
-function QuestionFormController($scope, $modalInstance, $state, question, questionService, alertService) {
+function QuestionFormController($scope, $modalInstance, $state, categoryId, question, questionService) {
   preFillForm();
 
   var choiceCounter = 2;
 
+  $scope.categoryId = categoryId;
   $scope.errors = [];
   $scope.showError = false;
 
@@ -34,6 +35,7 @@ function QuestionFormController($scope, $modalInstance, $state, question, questi
     params = {
       question: {
         text: $scope.text,
+        category_id: $scope.categoryId,
         choices_attributes: $scope.choices
       }
     };

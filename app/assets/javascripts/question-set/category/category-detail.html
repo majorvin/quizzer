@@ -1,7 +1,8 @@
 <br />
 <br />
 <br />
-<form name="form" ng-submit="ok(form.$invalid)" class="form-horizontal" novalidate>
+
+<form name="form" ng-submit="submitCategory(form.$invalid)" class="form-horizontal" novalidate>
   <div class="alert alert-danger alert-dismissible fade in" role="alert" ng-if="showError == true">
     <a class="close" data-dismiss="alert" aria-label="Close">x
     </a>
@@ -84,7 +85,7 @@
   </div>
   <button style="visibility: hidden"></button>
   <div class="text-right">
-    <button class="btn btn-primary" type="button" ng-click="ok(form.$invalid)" ng-disabled="form.$invalid">OK</button>
+    <button class="btn btn-primary" type="button" ng-click="submitCategory(form.$invalid)" ng-disabled="form.$invalid">OK</button>
     <a ui-sref="categories">
       <button class="btn btn-warning" type="button">Cancel</button>
     </a>
@@ -92,40 +93,74 @@
 </form>
 <hr />
 <div ng-show="category">
-  <h4>Questions
-    <a ui-sref="categoryDetailQuestion({ id: category.id })">
-      <button type="button" class="btn btn-primary" ng-click="">
-        <i class="glyphicon glyphicon-plus"></i>
-      </button>
-    </a>
-    <button type="button" class="btn btn-danger" ng-click="removeQuestions()" ng-hide="questionNotSelected()">
-      <i class="glyphicon glyphicon-minus"></i>
+  <div class="text-center">
+    <h1>Questions</h1>
+    <button type="button" class="btn btn-primary" ng-click="submitQuestion(category.id)">
+      Add Question
     </button>
-  </h4>
+  </div>
+  <br />
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="pull-left">
+        Show
+        <label>
+          <select class="form-control input-sm" ng-model="numPerPage" ng-init="numPerPage='10'">
+            <option value="" ng-if="false"></option>
+            <option>10</option>
+            <option>25</option>
+            <option>50</option>
+            <option>100</option>
+          </select>
 
+        </label>
+        entries
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <form class="pull-right" role="search" ng-submit="search(searchTerm)">
+        <div class="btn-group">
+          <input type="search" class="form-control" placeholder="Search" name="searchTerm" id="searchTerm" ng-model="searchTerm" ng-change="search(searchTerm)">
+          <span id="searchclear" class="searchclear glyphicon glyphicon-remove-circle" ng-click="clearSearch()"></span>
+        </div>
+       </form>
+    </div>
+  </div>
+  <br />
   <div class="table-responsive">
-
     <table class="table table-striped table-hover table-bordered">
       <thead>
         <tr>
-          <th style="width: 20px">
-            <input type="checkbox" ng-model="checkall" id="checkall" ng-click="clickCheckAll()">
-          </th>
           <th>Text</th>
+          <th style="width: 105px;">Actions</th>
         </tr>
       </thead>
-      <tbody>
-        <tr ng-repeat="question in displayedQuestions">
+      <tbody data-link="row" class="rowlink">
+        <tr ng-repeat="question in questions">
           <td class="vert-align">
-            <input type="checkbox" ng-model="question.selected" name="questions" id="{{question.id}}"/>
+            <a ng-click="submitQuestion(category.id, question.id)">
+              {{question.text}}
+            </a>
           </td>
-          <td class="vert-align">{{question.text}}</td>
+          <td class="rowlink-skip">
+            <a ng-click="submitQuestion(category.id, question.id)" class="btn">
+              <i class="glyphicon glyphicon-edit"></i>
+            </a>
+            <a class="btn" ng-click="archiveQuestion(question.id)">
+              <i class="glyphicon glyphicon-trash"></i>
+            </a>
+          </td>
         </tr>
       </tbody>
     </table>
-    <div class="text-center">
-      <pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages" ng-change="pageChanged()"></pagination>
-    </div>
+      <div class="row">
+        <div class="text-center">
+          Showing {{showFrom()}} to {{showTo()}} of {{totalItems}} entries
+        </div>
+        <div class="text-center">
+          <pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages" ng-change="pageChanged()" items-per-page="numPerPage"></pagination>
+        </div>
+      </div>
   </div>
 </div>
 

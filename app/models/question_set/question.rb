@@ -3,16 +3,15 @@ class QuestionSet::Question < ActiveRecord::Base
 
   default_scope { order("id") }
 
-  has_many :category_questions, class_name: "QuestionSet::CategoryQuestion"
-  has_many :categories, through: :category_questions
+  belongs_to :category, class_name: "QuestionSet::Category", inverse_of: :questions
   has_many :choices, class_name: "QuestionSet::Choice", inverse_of: :question
-
   accepts_nested_attributes_for :choices, allow_destroy: true, reject_if: :reject_question
 
   validates :text, presence: true
 
   scope :active, -> { where(archived_at: nil) }
   scope :where_text_like, -> (text) { where("text ilike ?", "%#{text}%") }
+  scope :by_category_id, -> (id) { where("category_id = ?", id) }
 
   private
 

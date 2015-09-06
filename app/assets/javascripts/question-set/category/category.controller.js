@@ -1,11 +1,11 @@
-angular.module("quizzer").controller("QuestionController", QuestionController);
+angular.module("quizzer").controller("CategoryController", CategoryController);
 
-function QuestionController($scope, questionService, questions, $modal, $state) {
-  $scope.questions = questions.questions;
+function CategoryController($scope, categoryService, categories, $modal, $state) {
+  $scope.categories = categories.categories;
   $scope.currentPage = 1;
   $scope.numPerPage = 10;
   $scope.maxSize = 5;
-  $scope.totalItems = questions.meta.total_count;
+  $scope.totalItems = categories.meta.total_count;
 
   $scope.pageChanged = function () {
     params = {
@@ -14,9 +14,9 @@ function QuestionController($scope, questionService, questions, $modal, $state) 
       keywords: $scope.searchTerm
     };
 
-    questionService.getAllQuestions(params)
+    categoryService.getAllCategories(params)
       .then(function(response) {
-        $scope.questions = response.data.questions;
+        $scope.categories = response.data.categories;
         $scope.totalItems = response.data.meta.total_count;
     });
   };
@@ -26,7 +26,7 @@ function QuestionController($scope, questionService, questions, $modal, $state) 
   $scope.showFrom = function () {
     var number = 0;
 
-    if ($scope.questions.length > 0) {
+    if ($scope.categories.length > 0) {
       number = ($scope.currentPage * $scope.numPerPage) - $scope.numPerPage + 1
     }
 
@@ -38,14 +38,15 @@ function QuestionController($scope, questionService, questions, $modal, $state) 
   $scope.showTo = function() {
     var number = $scope.currentPage * $scope.numPerPage;
 
-    if ($scope.questions.length < $scope.numPerPage) {
-      number = $scope.questions.length;
+    if ($scope.categories.length < $scope.numPerPage) {
+      number = $scope.categories.length;
     }
 
     return number;
   };
 
   $scope.$watch("numPerPage", function() {
+    $scope.currentPage = 1;
     $scope.pageChanged();
   });
 
@@ -58,7 +59,7 @@ function QuestionController($scope, questionService, questions, $modal, $state) 
     $scope.pageChanged();
   };
 
-  $scope.archiveQuestion = function(id) {
+  $scope.archiveCategory = function(id) {
     swal({
       title: "Are you sure?",
       type: "warning",
@@ -69,7 +70,7 @@ function QuestionController($scope, questionService, questions, $modal, $state) 
       allowOutsideClick: true
     },
     function() {
-      questionService.archiveQuestion(id)
+      categoryService.archiveCategory(id)
         .then(function() {
           $state.go($state.current, {}, {reload: true})
             .then(function() {
@@ -93,15 +94,15 @@ function QuestionController($scope, questionService, questions, $modal, $state) 
   $scope.submit = function (id) {
     var modalInstance = $modal.open({
       animation: true,
-      templateUrl: 'question-set/question-form.html',
-      controller: 'QuestionFormController',
+      templateUrl: 'question-set/category-form.html',
+      controller: 'CategoryFormController',
       size: 'lg',
       resolve: {
-        question: function(questionService) {
+        category: function(categoryService) {
           if (angular.isDefined(id)) {
-            return questionService.getQuestion(id)
+            return categoryService.getCategory(id)
               .then(function(response) {
-                return response.data.question
+                return response.data.category
               });
           }
           else {

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150903122635) do
+ActiveRecord::Schema.define(version: 20150830033049) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,15 +28,6 @@ ActiveRecord::Schema.define(version: 20150903122635) do
 
   add_index "question_set_categories", ["name"], name: "index_question_set_categories_on_name", using: :btree
 
-  create_table "question_set_category_questions", force: :cascade do |t|
-    t.integer  "question_id", null: false
-    t.integer  "category_id", null: false
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
-
-  add_index "question_set_category_questions", ["question_id", "category_id"], name: "index_category_questions", unique: true, using: :btree
-
   create_table "question_set_choices", force: :cascade do |t|
     t.integer  "question_id",                 null: false
     t.boolean  "answer",      default: false, null: false
@@ -48,6 +39,7 @@ ActiveRecord::Schema.define(version: 20150903122635) do
   add_index "question_set_choices", ["question_id"], name: "index_question_set_choices_on_question_id", using: :btree
 
   create_table "question_set_questions", force: :cascade do |t|
+    t.integer  "category_id", null: false
     t.string   "text",        null: false
     t.datetime "archived_at"
     t.datetime "created_at",  null: false
@@ -57,4 +49,5 @@ ActiveRecord::Schema.define(version: 20150903122635) do
   add_index "question_set_questions", ["text"], name: "index_question_set_questions_on_text", using: :btree
 
   add_foreign_key "question_set_choices", "question_set_questions", column: "question_id"
+  add_foreign_key "question_set_questions", "question_set_categories", column: "category_id"
 end

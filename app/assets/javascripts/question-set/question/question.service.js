@@ -4,7 +4,7 @@ questionservice.$inject = ["$http"];
 
 function questionservice($http) {
   return {
-    getAllQuestions: function(params) {
+    getCategoryQuestions: function(params) {
       return $http.get("question_set/questions.json", { params: params });
     },
 

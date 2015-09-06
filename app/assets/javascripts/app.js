@@ -7,23 +7,9 @@ var quizzer = angular.module("quizzer", [
 
 quizzer.config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
-  .state('questions', {
-    url: '/question_set/questions',
-    templateUrl: 'question-set/questions.html',
-    controller: 'QuestionController',
-    resolve: {
-      questions: function(questionService){
-        return questionService.getAllQuestions()
-          .then(function(response) {
-            return response.data;
-          });
-        //TODO Add error
-      }
-    }
-  })
   .state('categories', {
     url: '/question_set/categories',
-    templateUrl: 'question-set/categories.html',
+    templateUrl: 'question-set/category/categories.html',
     controller: 'CategoryController',
     resolve: {
       categories: function(categoryService){
@@ -38,9 +24,20 @@ quizzer.config(function($stateProvider, $urlRouterProvider) {
   })
   .state('categoryDetail', {
     url: '/question_set/categories/:id',
-    templateUrl: 'question-set/category-detail.html',
+    templateUrl: 'question-set/category/category-detail.html',
     controller: 'CategoryDetailController',
     resolve: {
+      questions: function(questionService, $stateParams){
+        if ($stateParams.id === "") { return []; };
+
+        return questionService.getCategoryQuestions({category_id: $stateParams.id})
+                .then(function(response) {
+                  return response.data;
+                }, function(response) {
+                  console.log(response);
+                  //TODO Add error
+                });
+      },
       category: function(categoryService, $stateParams){
         if ($stateParams.id !== "") {
           return categoryService.getCategory($stateParams.id)
@@ -54,26 +51,19 @@ quizzer.config(function($stateProvider, $urlRouterProvider) {
         else {
           return undefined;
         }
+      }
+    }
+  })
 
-      }
-    }
-  })
-  .state('categoryDetailQuestion', {
-    url: '/question_set/categories/:id/questions',
-    templateUrl: 'question-set/category-detail-questions.html',
-    controller: 'CategorDetailQuestionController',
-    resolve: {
-      questions: function(categoryService, $stateParams){
-        return categoryService.showQuestions($stateParams.id, {})
-          .then(function(response) {
-            return response.data;
-          }, function(response) {
-            console.log(response);
-            //TODO Add error
-          });
-      }
-    }
-  })
 
   // $urlRouterProvider.otherwise('/questions');
+})
+.run(function($rootScope) {
+  $rootScope.$on('$stateChangeStart', function() {
+    $rootScope.stateLoading = true;
+  })
+
+  $rootScope.$on('$stateChangeSuccess', function() {
+    $rootScope.stateLoading = false;
+  })
 });

@@ -1,11 +1,12 @@
 class QuestionSet::QuestionsController < ApplicationController
   def index
-    @active     = QuestionSet::Question.active.where_text_like(params[:keywords])
+    @active     = QuestionSet::Question.active
+    @category_questions = @active.by_category_id(params[:category_id]).where_text_like(params[:keywords])
     @page       = (params[:page] || 0).to_i
     @page_size  = (params[:page_size] || 10).to_i
-    @questions  = @active.offset(@page_size * @page).limit(@page_size)
+    @questions  = @category_questions.offset(@page_size * @page).limit(@page_size)
 
-    respond_with @questions, meta: { total_count: @active.count }
+    respond_with @questions, meta: { total_count: @category_questions.count }
   end
 
   def show
@@ -43,9 +44,9 @@ class QuestionSet::QuestionsController < ApplicationController
     end
   end
 
-  private
+  # private
 
   def question_params
-    params.require(:question).permit(:text, choices_attributes: [:id, :text, :answer, :_destroy])
+    params.require(:question).permit(:text, :category_id, choices_attributes: [:id, :text, :answer, :_destroy])
   end
 end

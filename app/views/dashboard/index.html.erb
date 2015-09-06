@@ -1,1 +1,10 @@
-<ui-view></ui-view>
+
+<br />
+<br />
+<br />
+<div ng-show="stateLoading">
+  <progressbar class="progress-striped active" value="dynamic" type="info">Loading, Please Wait</progressbar>
+</div>
+<div ng-hide="stateLoading">
+  <ui-view></ui-view>
+</div>
