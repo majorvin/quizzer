@@ -1,0 +1,13 @@
+{
+  "name": "dsl-generated dependencies",
+  "dependencies": {
+    "bootstrap-sass-official": "latest",
+    "angular": "~> 1.4",
+    "angular-route": "latest",
+    "angular-animate": "latest",
+    "angular-ui-router": "latest",
+    "angular-bootstrap": "latest",
+    "jasny-bootstrap": "latest",
+    "sweetalert": "latest"
+  }
+}

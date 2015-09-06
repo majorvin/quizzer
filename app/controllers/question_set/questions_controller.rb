@@ -1,0 +1,51 @@
+class QuestionSet::QuestionsController < ApplicationController
+  def index
+    @active     = QuestionSet::Question.active.where_text_like(params[:keywords])
+    @page       = (params[:page] || 0).to_i
+    @page_size  = (params[:page_size] || 10).to_i
+    @questions  = @active.offset(@page_size * @page).limit(@page_size)
+
+    respond_with @questions, meta: { total_count: @active.count }
+  end
+
+  def show
+    respond_with QuestionSet::Question.find(params[:id])
+  end
+
+  def create
+    @question =  QuestionSet::Question.create(question_params)
+
+    if @question.save
+      render nothing: true, status: 204
+    else
+      render json: { errors: @question.errors.to_a }, status: :unprocessable_entity
+    end
+  end
+
+  def update
+    @question = QuestionSet::Question.find(params[:id])
+
+    if @question.update(question_params)
+      render nothing: true, status: 204
+    else
+      render json: { errors: @question.errors.to_a }, status: :unprocessable_entity
+    end
+  end
+
+  # Archive a question
+  def archive
+    @question = QuestionSet::Question.find(params[:id])
+
+    if @question.update_attributes(archived_at: DateTime.now)
+      render nothing: true, status: 204
+    else
+      render json: { errors: @question.errors.to_a }, status: :unprocessable_entity
+    end
+  end
+
+  private
+
+  def question_params
+    params.require(:question).permit(:text, choices_attributes: [:id, :text, :answer, :_destroy])
+  end
+end

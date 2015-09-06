@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Quizzer</title>
+  <%= stylesheet_link_tag    'application', media: 'all' %>
+  <%= javascript_include_tag 'application' %>
+  <%= csrf_meta_tags %>
+</head>
+<body ng-app="quizzer" ng-controller="RootCtrl">
+  <div class="navbar navbar-default navbar-fixed-top">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <%= link_to "Quiz App", root_url, id: 'logo', :class => "navbar-brand" %>
+    </div>
+    <div id="navbar" class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="#">Take a quiz!</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin
+            <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a ui-sref="questions">Question List</a>
+            </li>
+            <li>
+              <a ui-sref="categories">Question Category</a>
+            </li>
+            <li><a href="#">Results</a></li>
+            <li><a href="#">Users</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Majorvin Tan
+            <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Profile</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="container">
+    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">
+      {{ alert.msg }}
+    </alert>
+    <%= yield %>
+  </div>
+</body>
+</html>

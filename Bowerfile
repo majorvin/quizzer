@@ -1,0 +1,8 @@
+asset 'bootstrap-sass-official'
+asset 'angular', '~> 1.4'
+asset 'angular-route'
+asset 'angular-animate'
+asset 'angular-ui-router'
+asset 'angular-bootstrap'
+asset 'jasny-bootstrap'
+asset 'sweetalert'

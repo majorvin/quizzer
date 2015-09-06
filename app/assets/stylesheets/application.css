@@ -1,0 +1,53 @@
+    /*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require bootstrap/dist/css/bootstrap
+ *= require jasny-bootstrap
+ *= require sweetalert
+ *= require_tree .
+ *= require_self
+ */
+
+ @import "bootstrap/dist/css/bootstrap";
+
+.table tbody>tr>td {
+  vertical-align: middle;
+}
+
+.table thead>tr>th {
+  text-align: center;
+}
+
+.searchinput {
+  width: 100px;
+}
+.searchclear {
+  position:absolute;
+  right:5px;
+  top:0;
+  bottom:0;
+  height:14px;
+  margin:auto;
+  font-size:14px;
+  cursor:pointer;
+  color:#ccc;
+}
+
+.table-borderless {
+  border-top:0px !important;
+  border-bottom:0px !important;
+  border-left:0px !important;
+  border-right:0px !important;
+}
+.table-row-borderless {
+  border: 0px !important;
+}

@@ -1,0 +1,20 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  username: shine
+  password: shine
+
+development:
+  <<: *default
+  database: financial-book_development
+
+test:
+  <<: *default
+  database: financial-book_test
+
+production:
+  <<: *default
+  database: financial-book_production
+  username: financial-book
+  password: <%= ENV['FINANCIAL-BOOK_DATABASE_PASSWORD'] %>
