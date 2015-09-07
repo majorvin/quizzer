@@ -8,5 +8,6 @@ class QuestionSet::Category < ActiveRecord::Base
   default_scope { order("id") }
 
   scope :active, -> { where(archived_at: nil) }
+  scope :enabled, -> { where(enable: true) }
   scope :where_name_like, -> (text) { where("name ilike ?", "%#{text}%") }
 end

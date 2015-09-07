@@ -54,7 +54,35 @@ quizzer.config(function($stateProvider, $urlRouterProvider) {
       }
     }
   })
+  .state('available', {
+    url: '/exam/available',
+    templateUrl: 'exam/available.html',
+    controller: 'ExamAvailableController',
+    resolve: {
+      availableExams: function(examListService){
+        return examListService.getAvailableList()
+          .then(function(response) {
+            return response.data;
+          });
 
+        // TODO Add error
+      }
+    }
+  })
+  .state('examStart', {
+    url: '/exam/start/:id',
+    templateUrl: 'exam/start.html',
+    controller: 'ExamStartController',
+    resolve: {
+      questions: function(examListService, $stateParams){
+        return examListService.findExam({list_id: $stateParams.id})
+          .then(function(response) {
+            return response.data.list.questions;
+          });
+        // TODO Add error
+      }
+    }
+  })
 
   // $urlRouterProvider.otherwise('/questions');
 })

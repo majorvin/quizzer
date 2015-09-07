@@ -14,6 +14,7 @@ gem 'sprockets', '2.12.3'
 gem 'responders', '~> 2.0'
 gem 'angular_rails_csrf'
 gem 'active_model_serializers'
+gem 'activerecord-import'
 
 group :development, :test do
   gem 'byebug'

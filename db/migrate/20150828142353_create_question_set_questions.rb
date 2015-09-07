@@ -1,7 +1,7 @@
 class CreateQuestionSetQuestions < ActiveRecord::Migration
   def change
     create_table :question_set_questions do |t|
-      t.references :category, indeX: true, null: false
+      t.references :category, index: true, null: false
       t.string :text, null: false, index: true
       t.datetime :archived_at
 

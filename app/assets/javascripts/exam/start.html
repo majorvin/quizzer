@@ -1,0 +1,11 @@
+<br /><br /><br />
+<div ng-repeat="question in questions">
+  <div class="panel panel-default">
+    <div class="panel-heading">{{question.text}}</div>
+    <div class="panel-body">
+      <div ng-repeat="choice in question.choices">
+        <input type="radio"> {{choice.text}}
+      </div>
+    </div>
+  </div>
+</div>
